@@ -1,31 +1,38 @@
-var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/test');
+const mongoose = require('mongoose');
 
-var db = mongoose.connection;
+mongoose.connect('mongodb://localhost/oneNightMeal');
 
-db.on('error', function() {
+const db = mongoose.connection;
+
+db.on('error', () => {
   console.log('mongoose connection error');
 });
 
-db.once('open', function() {
+db.once('open', () => {
   console.log('mongoose connected successfully');
 });
 
-var itemSchema = mongoose.Schema({
-  quantity: Number,
-  description: String
+const appSchema = mongoose.Schema({
+  cheap: Boolean,
+  cuisine: Array,
+  dishTypes: Array,
+  extendedIngredients: Array,
+  healthScore: Number,
+  id: Number,
+  image: String,
+  instructions: String,
+  pricePerServing: Number,
+  servings: Number,
+  readyInMinutes: Number,
+  summary: String,
+  title: String,
+  weightWatcherSmartPoints: Number,
+  vegan: String,
+  vegetarian: String,
 });
 
-var Item = mongoose.model('Item', itemSchema);
+const Recipes = mongoose.model('Recipes', appSchema);
 
-var selectAll = function(callback) {
-  Item.find({}, function(err, items) {
-    if(err) {
-      callback(err, null);
-    } else {
-      callback(null, items);
-    }
-  });
+module.exports = {
+  Recipes,
 };
-
-module.exports.selectAll = selectAll;
